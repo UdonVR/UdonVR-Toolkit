@@ -14,7 +14,7 @@ using System.Linq;
 using UdonVR.EditorUtility;
 #endif
 
-namespace UdonVR.Childofthebeast.EasyLocks.Password
+namespace UdonVR.Tools.EasyLocks.Password
 {
     [AddComponentMenu("UdonVR/Tools/EasyLocks/Password")]
     public class EasyLocks_Password : UdonSharpBehaviour
@@ -56,6 +56,8 @@ namespace UdonVR.Childofthebeast.EasyLocks.Password
         [HideInInspector]
         public bool _isLocked = false;
 
+        private string _localplayer;
+
         public void Start()
         {
             if (Networking.IsMaster && isMasterOnly)
@@ -70,7 +72,7 @@ namespace UdonVR.Childofthebeast.EasyLocks.Password
             {
                 foreach (string _user in Usernames)
                 {
-                    if (_user == Networking.LocalPlayer.displayName)
+                    if (_user == _localplayer)
                     {
                         GlobalCheck();
                         return;
@@ -88,7 +90,7 @@ namespace UdonVR.Childofthebeast.EasyLocks.Password
             }
         }
 
-        private void GlobalCheck()
+        public void GlobalCheck()
         {
             if (isGlobal)
             {

@@ -14,7 +14,7 @@ using System.Linq;
 using UdonVR.EditorUtility;
 #endif
 
-namespace UdonVR.Childofthebeast.EasyLocks.Button
+namespace UdonVR.Tools.EasyLocks.Button
 {
     [AddComponentMenu("UdonVR/Tools/EasyLocks/Button")]
     public class EasyLocks_Button : UdonSharpBehaviour
@@ -29,8 +29,8 @@ namespace UdonVR.Childofthebeast.EasyLocks.Button
         [Tooltip("If 'is Master Only' is True then the lock can only be used by the room master. Use Username ignores this.")]
         public bool isMasterOnly = true;
 
-        [Tooltip("If 'Use Username' is True then Usernames are the first thing the lock checks. This ignores MasterOnly.")]
-        public bool useUsername = false;
+        [Tooltip("0 is off.\n\n1 is MasterOnly Bypass.\n\n2 is Only Usernames.")][Range(0, 2)]
+        public int useUsername = 0;
         [Tooltip("Usernames need to be exactly how they are In-Game. They are Case Sensitive.")]
         public string[] Usernames;
 
@@ -46,8 +46,11 @@ namespace UdonVR.Childofthebeast.EasyLocks.Button
         [HideInInspector]
         public bool _isLocked = false;
 
+        private string _localplayer;
+
         public void Start()
         {
+            _localplayer = Networking.LocalPlayer.displayName;
             if (Networking.IsMaster && isMasterOnly)
             {
                 _isSyncUnlocked = LockTargetsDefaultOff[1].activeSelf;
@@ -56,17 +59,21 @@ namespace UdonVR.Childofthebeast.EasyLocks.Button
 
         public override void Interact()
         {
-            foreach (string _user in Usernames)
+            if (useUsername >= 1)
             {
-                if (_user == Networking.LocalPlayer.displayName)
+                foreach (string _user in Usernames)
                 {
-                    GlobalCheck();
-                    break;
+                    if (_user == _localplayer)
+                    {
+                        GlobalCheck();
+                        return;
+                    }
                 }
             }
-            if (Networking.IsMaster && isMasterOnly)
+            if (Networking.IsMaster && isMasterOnly && useUsername != 2)
             {
                 GlobalCheck();
+                return;
             }
             else if (isMasterOnly == false)
             {
@@ -74,7 +81,7 @@ namespace UdonVR.Childofthebeast.EasyLocks.Button
             }
         }
 
-        private void GlobalCheck()
+        public void GlobalCheck()
         {
             if (isGlobal)
             {
