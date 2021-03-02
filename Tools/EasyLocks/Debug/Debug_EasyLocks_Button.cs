@@ -5,7 +5,7 @@ using VRC.SDKBase;
 using VRC.Udon;
 using UnityEngine.UI;
 
-namespace UdonVR.Childofthebeast.EasyLocks.Button
+namespace UdonVR.Tools.EasyLocks.Button
 {
     public class Debug_EasyLocks_Button : UdonSharpBehaviour
     {

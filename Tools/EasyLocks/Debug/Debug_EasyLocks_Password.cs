@@ -5,7 +5,7 @@ using VRC.SDKBase;
 using VRC.Udon;
 using UnityEngine.UI;
 
-namespace UdonVR.Childofthebeast.EasyLocks.Password
+namespace UdonVR.Tools.EasyLocks.Password
 {
     public class Debug_EasyLocks_Password : UdonSharpBehaviour
     {

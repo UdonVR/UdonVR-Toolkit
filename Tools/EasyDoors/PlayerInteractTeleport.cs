@@ -12,7 +12,7 @@ using UdonVR.EditorUtility;
 
 #endif
 
-namespace UdonVR.Takato.PlayerTools
+namespace UdonVR.Tools.PlayerTools
 {
     /// <summary>
     ///
