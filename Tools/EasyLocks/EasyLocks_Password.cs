@@ -49,7 +49,7 @@ namespace UdonVR.Tools.EasyLocks.Password
         [Space]
 
         [Tooltip("This is the target InputFeild to use for the password check.")]
-        public InputField PasscodeFeild;
+        public InputField PasscodeField;
 
         [HideInInspector]
         [UdonSynced]public bool _isSyncUnlocked = false;
@@ -60,6 +60,7 @@ namespace UdonVR.Tools.EasyLocks.Password
 
         public void Start()
         {
+            _localplayer = Networking.LocalPlayer.displayName;
             if (Networking.IsMaster && isMasterOnly)
             {
                 _isSyncUnlocked = LockTargetsDefaultOff[1].activeSelf;
@@ -126,8 +127,8 @@ namespace UdonVR.Tools.EasyLocks.Password
         }
         public void GlobalToggleLock()
         {
-            if (PasscodeFeild == null) return;
-            if (Code == PasscodeFeild.text)
+            if (PasscodeField == null) return;
+            if (Code == PasscodeField.text)
             {
                 _isSyncUnlocked = !_isSyncUnlocked;
             }
