@@ -61,9 +61,9 @@ namespace UdonVR.Tools.EasyLocks.Password
         public void Start()
         {
             _localplayer = Networking.LocalPlayer.displayName;
-            if (Networking.IsMaster && isMasterOnly)
+            if (Networking.IsMaster)
             {
-                _isSyncUnlocked = LockTargetsDefaultOff[1].activeSelf;
+                Setlock();
             }
         }
 
