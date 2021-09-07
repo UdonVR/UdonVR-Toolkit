@@ -1,4 +1,6 @@
 # UdonVR Toolkit
+### **[UdonSharp](https://github.com/MerlinVR/UdonSharp/releases) is rquired for this toolkit to work**
+
 current free version: `2.2`
 
 current paid version: `2.2`
