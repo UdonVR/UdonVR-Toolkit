@@ -15,4 +15,4 @@
     - `On Exit` means that the player will get teleported when they leave the **collider**[^1] (eg. they walked "through" the door).
 * Optional: Enable Lerp to remote. It means that other players will see the teleporting player "Move" to the Target Location instead of instantly teleporting there.
 
-[1] You will have to set the collider to `Is Trigger` for that to work. Note, that this will disable the actual collision of the collider, so your player may be able to walk through the door object.
+[^1] You will have to set the collider to `Is Trigger` for that to work. Note, that this will disable the actual collision of the collider, so your player may be able to walk through the door object.
