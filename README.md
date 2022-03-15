@@ -3,6 +3,6 @@
 
 current free version: `2.2`
 
-current paid version: `4.7`
+current paid version: `5.1`
 
 This is going to be used for Bug tracking and Documentation for our Toolkit
