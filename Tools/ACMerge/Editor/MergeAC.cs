@@ -5,6 +5,8 @@ using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 
+using UdonVR.EditorUtility;
+
 namespace UdonVR.Tools
 {
     //using System;
@@ -256,14 +258,8 @@ namespace UdonVR.Tools
                     GUIError("Unknown Error");
                     break;
             }
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.Space();
-            if (GUILayout.Button("<color=#d4d4d4bf>UdonVR</color>\n<i>VRCUdon.com</i>", logoStyle, GUILayout.ExpandWidth(false)))
-            {
-                Application.OpenURL("https://VRCUdon.com");
-            }
-            EditorGUILayout.Space();
-            EditorGUILayout.EndHorizontal();
+
+            UdonVR_GUI.ShowUdonVRLinks(32, 32, true);
         }
 
         private void OnInspectorUpdate()

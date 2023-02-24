@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.Animations;
 using System.Linq;
 using UnityEditor;
+using System.IO;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using static UdonVR.EditorUtility.EditorHelper;
 using System.Text;
@@ -10,22 +13,21 @@ using System;
 
 using UdonVR.EditorUtility;
 
-public class SortChild : EditorWindow
+public class UdonVRInfo : EditorWindow
 {
+    private StreamReader VersionFile;
 
     public string newPath = " ";
     private GUILayoutOption[] space = new GUILayoutOption[] { GUILayout.Height(16), GUILayout.MinHeight(16), GUILayout.MaxHeight(16) };
     private GUILayoutOption[] noExpandWidth = new GUILayoutOption[] { GUILayout.Height(16), GUILayout.MinHeight(16), GUILayout.MaxHeight(16), GUILayout.ExpandWidth(false) };
     private GUIStyle style;
     public GUIStyle logoStyle;
+    private string _Version = "null";
 
-    Transform parentTransform;
-
-
-    [MenuItem("UdonVR/Sort Children")]
+    [MenuItem("UdonVR/About UdonVR", false, 5000)]
     public static void ShowWindow()
     {
-        SortChild window = GetWindow<SortChild>("Sort Children");
+        UdonVRInfo window = GetWindow<UdonVRInfo>("About UdonVR");
         window.minSize = new Vector2(385, 250);
     }
     private void GUIWarning(string text)
@@ -57,41 +59,24 @@ public class SortChild : EditorWindow
         logoStyle.padding.top = 17;
         logoStyle.normal.textColor = Color.cyan;
     }
-    public static string PadNumbers(string input)
-    {
-        return System.Text.RegularExpressions.Regex.Replace(input, "[0-9]+", match => match.Value.PadLeft(10, '0'));
-    }
     private void OnGUI()
     {
         if (style == null)
             InitGuiStyles();
-
-        EditorGUILayout.LabelField("Sort", style);
+        if (_Version == "null")
+            CheckUpdate();
+        EditorGUILayout.LabelField("UdonVR Patreon Tools.\nThese are a collection of tools that are trying to streamline the creation of VRChat worlds.", style);
         EditorGUILayout.Space();
-
-        parentTransform = (Transform)EditorGUILayout.ObjectField("Parent", parentTransform, typeof(Transform), true);
-
-        if (GUILayout.Button("Sort"))
-        {
-            if (parentTransform != null && !UnityEditor.EditorUtility.IsPersistent(parentTransform))
-            {
-
-                List<Transform> children = new List<Transform>();
-                foreach (Transform child in parentTransform)
-                {
-                    children.Add(child);
-                }
-
-                var sorted = children.OrderBy(child => PadNumbers(child.name)).ToList();
-
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    sorted[i].SetSiblingIndex(i);
-                }
-            }
-        }
+        EditorGUILayout.LabelField("Version: " + _Version, style);
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("If you didnt get these tools through our Patreon please consider supporting us.", style);
 
         UdonVR_GUI.ShowUdonVRLinks(32, 32, true);
     }
-
+    private void CheckUpdate()
+    {
+        VersionFile = new StreamReader(GetfileDirectory() + "/Version.txt", Encoding.Default);
+        _Version = VersionFile.ReadToEnd();
+        VersionFile.Close();
+    }
 }

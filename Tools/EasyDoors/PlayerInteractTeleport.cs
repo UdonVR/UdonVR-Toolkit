@@ -18,6 +18,7 @@ namespace UdonVR.Tools.PlayerTools
     ///
     /// </summary>
     [AddComponentMenu("UdonVR/Tools/EasyDoors")]
+    [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class PlayerInteractTeleport : UdonSharpBehaviour
     {
         [Tooltip("This is the GameObject that the player will teleport to.")]
@@ -29,24 +30,37 @@ namespace UdonVR.Tools.PlayerTools
         const int typeINTERACT = 1 << 0;
         const int typeENTER = 1 << 1;
         const int typeEXIT = 1 << 2;
+
+        private void Start()
+        {
+            if (!canType(typeINTERACT))
+            {
+                DisableInteractive = true;
+                transform.GetComponent<BoxCollider>().isTrigger = true;
+            }
+                
+        }
+
         public override void Interact()
         {
             if(canType(typeINTERACT))
-                Teleport();
+                _Teleport();
         }
         public override void OnPlayerTriggerEnter(VRCPlayerApi player)
         {
+            if (player != Networking.LocalPlayer) return;
             if (canType(typeENTER))
-                Teleport();
+                _Teleport();
         }
 
         public override void OnPlayerTriggerExit(VRCPlayerApi player)
         {
+            if (player != Networking.LocalPlayer) return;
             if (canType(typeEXIT))
-                Teleport();
+                _Teleport();
         }
 
-        private void Teleport()
+        private void _Teleport()
         {
             Networking.LocalPlayer.TeleportTo(targetLocation.position, targetLocation.rotation, teleportOrientation, lerpOnRemote);
         }

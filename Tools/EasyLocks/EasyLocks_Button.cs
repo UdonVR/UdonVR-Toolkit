@@ -36,9 +36,9 @@ namespace UdonVR.Tools.EasyLocks.Button
 
         [Space]
 
-        [Tooltip("This is what get's toggled when the lock is used.\n\nDefault Off should be used for objects that are off when you upload the world.\n\nThese will turn ON the first time the lock is used.")]
+        [Tooltip("This is what gets toggled when the lock is used.\n\nDefault Off should be used for objects that are off when you upload the world.\n\nThese will turn ON the first time the lock is used.")]
         public GameObject[] LockTargetsDefaultOff;
-        [Tooltip("This is what get's toggled when the lock is used.\n\nDefault On should be used for objects that are on when you upload the world.\n\nThese will turn OFF the first time the lock is used.")]
+        [Tooltip("This is what gets toggled when the lock is used.\n\nDefault On should be used for objects that are on when you upload the world.\n\nThese will turn OFF the first time the lock is used.")]
         public GameObject[] LockTargetsDefaultOn;
 
         [HideInInspector]
