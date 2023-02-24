@@ -62,19 +62,19 @@ namespace UdonVR.Tools.Utility{
         static void CreateAvatarPedestal(MenuCommand _cmd)
         {
             Debug.Log("[UdonVR] Creating Avatar Pedestal");
-            CreatePrefabFromFile("Assets/VRChat Examples/Prefabs/AvatarPedestal.prefab", _cmd);
+            CreatePrefabFromFile("Packages/com.vrchat.worlds/Samples/UdonExampleScene/Prefabs/AvatarPedestal.prefab", _cmd);
         }
         [MenuItem("GameObject/UdonVR/VRC/Chair", false, Menu)]
         static void CreateChair(MenuCommand _cmd)
         {
             Debug.Log("[UdonVR] Creating VRCChair3");
-            CreatePrefabFromFile("Assets/VRChat Examples/Prefabs/VRCChair/VRCChair3.prefab", _cmd);
+            CreatePrefabFromFile("Packages/com.vrchat.worlds/Samples/UdonExampleScene/Prefabs/VRCChair/VRCChair3.prefab", _cmd);
         }
         [MenuItem("GameObject/UdonVR/VRC/Mirror", false, Menu)]
         static void CreateMirror(MenuCommand _cmd)
         {
             Debug.Log("[UdonVR] Creating VRCMirror");
-            CreatePrefabFromFile("Assets/VRChat Examples/Prefabs/VRCMirror.prefab", _cmd);
+            CreatePrefabFromFile("Packages/com.vrchat.worlds/Samples/UdonExampleScene/Prefabs/VRCMirror.prefab", _cmd);
         }
         [MenuItem("GameObject/UdonVR/VRC/Mirror - No Collider", false, Menu)]
         static void CreateMirrorNoCollider(MenuCommand _cmd)
