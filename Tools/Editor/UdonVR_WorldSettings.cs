@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -51,6 +51,7 @@ public class UdonVR_WorldSettings : EditorWindow
     private Texture2D displayedTexture = null; // displayed texture
     private string displayedTexturePath = ""; // path gotten from picking a file from disc or taking a screenshot using the camera
     private int currentPickerWindow = 0;
+    public static Dictionary<string, Texture2D> ImageCache = new Dictionary<string, Texture2D>(); // Cache of downloaded images
     #endregion
 
     #region World Variables
@@ -602,20 +603,10 @@ public class UdonVR_WorldSettings : EditorWindow
             {
                 //VRC.Core.Logger.Log("<color=magenta>Updating an existing world.</color>", DebugLevel.All);
                 apiWorld = c.Model as ApiWorld;
-                ImageDownloader.DownloadImage(apiWorld.imageUrl, 0,
-                    obj =>
-                    {
-                        worldTexture = obj;
-                        displayedTexture = worldTexture;
-                        displayedTexturePath = AssetDatabase.GetAssetPath(displayedTexture);
-                        Repaint();
-                    },
-                    () =>
-                    {
-                        worldTexture = null;
-                        displayedTexture = udonVRLogo;
-                        Repaint();
-                    });
+
+                SetImage(apiWorld.id);
+                if(worldTexture == null)
+                    DownloadImage(apiWorld.id,apiWorld.thumbnailImageUrl);
 
                 GetWorldFileSize(); // get the worlds filesize in bytes
 
@@ -775,6 +766,49 @@ public class UdonVR_WorldSettings : EditorWindow
                 ApiFile fetchedFile = c.Model as ApiFile;
                 worldFileSize = fetchedFile.GetLatestVersion().file.sizeInBytes;
             });
+    }
+
+    private void DownloadImage(string id, string url)
+    {
+        if (string.IsNullOrEmpty(url))
+        {
+            return;
+        }
+
+        if (ImageCache.ContainsKey(id) && ImageCache[id] != null)
+        {
+            return;
+        }
+
+        EditorCoroutine.Start(VRCCachedWebRequest.Get(url, OnDone));
+        void OnDone(Texture2D texture)
+        {
+            if (texture != null)
+            {
+                ImageCache[id] = texture;
+            }
+            else if (ImageCache.ContainsKey(id))
+            {
+                ImageCache.Remove(id);
+            }
+            SetImage(id);
+        }
+    }
+    private void SetImage(string id)
+    {
+        if (ImageCache.ContainsKey(id) && ImageCache[id] != null)
+        {
+            worldTexture = ImageCache[id];
+            displayedTexture = worldTexture;
+            displayedTexturePath = AssetDatabase.GetAssetPath(displayedTexture);
+            Repaint();
+        }
+        else
+        {
+            worldTexture = null;
+            displayedTexture = udonVRLogo;
+            Repaint();
+        }
     }
     #endregion
 }
